@@ -1,0 +1,13 @@
+#编译相关文件
+build
+Makefile
+CMakeFiles
+CMakeCache.txt
+cmake_install.cmake
+
+#生成程序
+demo
+
+#其它
+crash.*
+.vscode
