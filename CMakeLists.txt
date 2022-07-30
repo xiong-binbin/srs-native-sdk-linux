@@ -1,8 +1,8 @@
 cmake_minimum_required (VERSION 3.8)
 
 #项目名称
-project(demo)
-set(PROJECT demo)
+project(srs-native-sdk)
+set(PROJECT srs-native-sdk)
 
 #使用c++11标准
 add_definitions(-std=c++11)
