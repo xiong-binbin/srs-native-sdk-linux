@@ -4,17 +4,20 @@ cmake_minimum_required (VERSION 3.8)
 project(srs-native-sdk)
 set(PROJECT srs-native-sdk)
 
-#使用c++11标准
-add_definitions(-std=c++11)
+#使用c++17标准
+add_definitions(-std=c++17)
 
 #配置Debug或Release版本
 set(CMAKE_BUILD_TYPE "Debug")
 # set(CMAKE_BUILD_TYPE "Release")
 
+add_definitions(-DWEBRTC_POSIX)
+
 #引入头文件
 include_directories(
         ./include
         /usr/local/include
+        /usr/local/include/webrtc
 )
 
 #引入源文件
@@ -33,6 +36,8 @@ add_executable(${PROJECT} ${SRC_LIST})
 target_link_libraries(
         ${PROJECT}
         -Wl,--start-group
-        /usr/local/lib/libwebrtc.a
+        webrtc
+        pthread
+        dl
         -Wl,--end-group
 )

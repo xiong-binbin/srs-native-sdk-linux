@@ -22,4 +22,6 @@ int SrsClient::Initialize()
     rtc::AutoSocketServerThread thread(&socketServer);
 
     rtc::InitializeSSL();
+
+    return 0;
 }
