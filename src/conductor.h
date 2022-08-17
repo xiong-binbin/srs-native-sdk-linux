@@ -34,6 +34,12 @@ public:
 protected:
     bool InitializePeerConnection();
 
+    bool CreatePeerConnection(bool dtls);
+
+    void DeletePeerConnection();
+
+    void AddTracks();
+
     //
     // PeerConnectionObserver implementation.
     //
@@ -76,6 +82,8 @@ protected:
 
 private:
     PeerConnectionClient* client_ = nullptr;
+    rtc::scoped_refptr<webrtc::PeerConnectionInterface> peer_connection_;
+    rtc::scoped_refptr<webrtc::PeerConnectionFactoryInterface> peer_connection_factory_;
 };
 
 
