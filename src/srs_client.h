@@ -6,8 +6,8 @@
 #define SRS_NATIVE_SDK_LINUX_SRS_CLIENT_H
 
 #include <iostream>
-#include "webrtc/rtc_base/thread.h"
-#include "webrtc/rtc_base/physical_socket_server.h"
+#include "rtc_base/thread.h"
+#include "rtc_base/physical_socket_server.h"
 
 
 class CustomSocketServer : public rtc::PhysicalSocketServer
