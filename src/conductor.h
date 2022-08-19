@@ -31,6 +31,14 @@ public:
     Conductor(PeerConnectionClient* client);
     virtual ~Conductor();
 
+    void StartLogin(const std::string& server, int port);
+
+    void DisconnectFromServer();
+
+    void ConnectToPeer(int peer_id);
+
+    void DisconnectFromCurrentPeer();
+
 protected:
     bool InitializePeerConnection();
 
@@ -81,6 +89,7 @@ protected:
     void OnServerConnectionFailure() override;
 
 private:
+    int peer_id_ = -1;
     PeerConnectionClient* client_ = nullptr;
     rtc::scoped_refptr<webrtc::PeerConnectionInterface> peer_connection_;
     rtc::scoped_refptr<webrtc::PeerConnectionFactoryInterface> peer_connection_factory_;

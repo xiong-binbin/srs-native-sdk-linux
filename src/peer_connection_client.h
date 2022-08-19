@@ -41,6 +41,17 @@ public:
 
     PeerConnectionClient();
     ~PeerConnectionClient();
+
+    bool is_connected();
+
+    void Connect(const std::string& server, int port, const std::string& client_name);
+
+    bool SignOut();
+
+    bool SendHangUp(int peer_id);
+
+private:
+    int id_ = -1;
 };
 
 

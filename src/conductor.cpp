@@ -46,6 +46,47 @@ Conductor::~Conductor()
 {
 }
 
+void Conductor::StartLogin(const std::string &server, int port)
+{
+    if(client_->is_connected()) {
+        return;
+    }
+
+    client_->Connect(server, port, "user");
+}
+
+void Conductor::DisconnectFromServer()
+{
+    if(client_->is_connected()) {
+        client_->SignOut();
+    }
+}
+
+void Conductor::ConnectToPeer(int peer_id)
+{
+    RTC_DCHECK(peer_id_ == -1);
+    RTC_DCHECK(peer_id != -1);
+
+    if(peer_connection_.get()) {
+        return;
+    }
+
+    if(InitializePeerConnection()) {
+        peer_id_ = peer_id;
+        peer_connection_->CreateOffer(this, webrtc::PeerConnectionInterface::RTCOfferAnswerOptions());
+    } else {
+        printf("ConnectToPeer Error \n");
+    }
+}
+
+void Conductor::DisconnectFromCurrentPeer()
+{
+    if(peer_connection_.get()) {
+        client_->SendHangUp(peer_id_);
+        DeletePeerConnection();
+    }
+}
+
 bool Conductor::InitializePeerConnection()
 {
     RTC_DCHECK(!peer_connection_factory_);
