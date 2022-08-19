@@ -34,6 +34,8 @@
 #include "pc/test/fake_periodic_video_track_source.h"
 #include "json.hpp"
 
+using json = nlohmann::json;
+
 
 Conductor::Conductor(PeerConnectionClient *client)
     : client_(client)
@@ -110,59 +112,72 @@ void Conductor::AddTracks()
         printf("AddTracks Error \n");
     }
 
-//    auto* videoTrackSource = new rtc::RefCountedObject<webrtc::FakePeriodicVideoTrackSource>(false /* remote */);
-
-
+//    auto* videoTrackSource = new rtc::RefCountedObject<webrtc::FakePeriodicVideoTrackSource>(false);
+//    rtc::scoped_refptr<webrtc::VideoTrackInterface> video_track(peer_connection_factory_->CreateVideoTrack("video_label", videoTrackSource));
+//    res = peer_connection_->AddTrack(video_track, {"stream_id"});
+//    if(!res.ok()) {
+//        printf("AddTracks Error \n");
+//    }
 }
 
 void Conductor::OnAddTrack(rtc::scoped_refptr<webrtc::RtpReceiverInterface> receiver, const std::vector<rtc::scoped_refptr<webrtc::MediaStreamInterface>> &streams)
 {
-
+    printf("OnAddTrack receiver id: %s \n", receiver->id().c_str());
 }
 
 void Conductor::OnRemoveTrack(rtc::scoped_refptr<webrtc::RtpReceiverInterface> receiver)
 {
-
+    printf("OnRemoveTrack receiver id: %s \n", receiver->id().c_str());
 }
 
 void Conductor::OnIceCandidate(const webrtc::IceCandidateInterface *candidate)
 {
+    std::string sdp;
+    if(!candidate->ToString(&sdp)) {
+        return;
+    }
 
+    printf("OnIceCandidate sdp: %s \n", sdp.c_str());
+
+//    json message;
+//    message["sdpMid"] = candidate->sdp_mid();
+//    message["sdpMLineIndex"] = candidate->sdp_mline_index();
+//    message["candidate"] = sdp;
 }
 
 void Conductor::OnSignedIn()
 {
-
+    printf("OnSignedIn \n");
 }
 
 void Conductor::OnDisconnected()
 {
-
+    printf("OnDisconnected \n");
 }
 
 void Conductor::OnPeerConnected(int id, const std::string &name)
 {
-
+    printf("OnPeerConnected, id: %d, name: %s \n", id, name.c_str());
 }
 
 void Conductor::OnPeerDisconnected(int id)
 {
-
+    printf("OnPeerDisconnected, id: %d \n", id);
 }
 
 void Conductor::OnMessageFromPeer(int peer_id, const std::string &message)
 {
-
+    printf("OnMessageFromPeer, peer_id: %d, message: %s \n", peer_id, message.c_str());
 }
 
 void Conductor::OnMessageSent(int err)
 {
-
+    printf("OnMessageSent \n");
 }
 
 void Conductor::OnServerConnectionFailure()
 {
-
+    printf("OnServerConnectionFailure \n");
 }
 
 
