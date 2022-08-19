@@ -30,7 +30,9 @@
 #include "rtc_base/logging.h"
 #include "rtc_base/ref_counted_object.h"
 #include "rtc_base/rtc_certificate_generator.h"
-#include "rtc_base/strings/json.h"
+#include "pc/test/fake_audio_capture_module.h"
+#include "pc/test/fake_periodic_video_track_source.h"
+#include "json.hpp"
 
 
 Conductor::Conductor(PeerConnectionClient *client)
@@ -76,7 +78,7 @@ bool Conductor::CreatePeerConnection(bool dtls)
     RTC_DCHECK(!peer_connection_);
 
     webrtc::PeerConnectionInterface::IceServer server;
-    server.uri = GetEnvVarOrDefault("WEBRTC_CONNECT", "stun:stun.l.google.com:19302");
+    server.uri = "stun:stun.l.google.com:19302";
 
     webrtc::PeerConnectionInterface::RTCConfiguration config;
     config.sdp_semantics = webrtc::SdpSemantics::kUnifiedPlan;
@@ -99,6 +101,18 @@ void Conductor::AddTracks()
     if(!peer_connection_->GetSenders().empty()) {
         return;
     }
+
+    cricket::AudioOptions audioOptions;
+    audioOptions.highpass_filter = false;
+    rtc::scoped_refptr<webrtc::AudioTrackInterface> audio_track(peer_connection_factory_->CreateAudioTrack("audio_label", peer_connection_factory_->CreateAudioSource(audioOptions)));
+    auto res = peer_connection_->AddTrack(audio_track, {"stream_id"});
+    if(!res.ok()) {
+        printf("AddTracks Error \n");
+    }
+
+//    auto* videoTrackSource = new rtc::RefCountedObject<webrtc::FakePeriodicVideoTrackSource>(false /* remote */);
+
+
 }
 
 void Conductor::OnAddTrack(rtc::scoped_refptr<webrtc::RtpReceiverInterface> receiver, const std::vector<rtc::scoped_refptr<webrtc::MediaStreamInterface>> &streams)
