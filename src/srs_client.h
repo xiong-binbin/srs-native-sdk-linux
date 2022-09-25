@@ -7,6 +7,8 @@
 
 #include <iostream>
 #include "rtc_base/thread.h"
+#include "conductor.h"
+#include "peer_connection_client.h"
 #include "rtc_base/physical_socket_server.h"
 
 
@@ -18,13 +20,21 @@ public:
 
     virtual void SetMessageQueue(rtc::Thread* queue) override { msgQueue = queue; }
 
+    void set_client(PeerConnectionClient* client) { client_ = client; }
+    void set_conductor(Conductor* conductor) { conductor_ = conductor; }
+
     virtual bool Wait(int cms, bool process_io) override
     {
+        if (!conductor_->connection_active() && client_ != NULL && !client_->is_connected()) {
+            msgQueue->Quit();
+        }
         return rtc::PhysicalSocketServer::Wait(0, process_io);
     }
 
 private:
     rtc::Thread* msgQueue;
+    Conductor*   conductor_;
+    PeerConnectionClient* client_;
 };
 
 
@@ -34,7 +44,8 @@ public:
     SrsClient();
     ~SrsClient();
 
-    int Initialize();
+    int  start(int argc, char* argv[]);
+    void stop();
 
 private:
 };

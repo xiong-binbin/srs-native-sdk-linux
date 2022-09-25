@@ -37,6 +37,20 @@
 using json = nlohmann::json;
 
 
+class DummySetSessionDescriptionObserver : public webrtc::SetSessionDescriptionObserver
+{
+public:
+    static DummySetSessionDescriptionObserver* Create() {
+        return new rtc::RefCountedObject<DummySetSessionDescriptionObserver>();
+    }
+
+    virtual void OnSuccess() { printf("DummySetSessionDescriptionObserver OnSuccess \n"); }
+    virtual void OnFailure(webrtc::RTCError error) {
+        printf("DummySetSessionDescriptionObserver Error type: %s, Error msg: %s \n", ToString(error.type()), error.message());
+    }
+};
+
+
 Conductor::Conductor(PeerConnectionClient *client)
     : client_(client)
 {
@@ -44,6 +58,11 @@ Conductor::Conductor(PeerConnectionClient *client)
 
 Conductor::~Conductor()
 {
+}
+
+bool Conductor::connection_active() const
+{
+    return peer_connection_ != nullptr;
 }
 
 void Conductor::StartLogin(const std::string &server, int port)
@@ -221,4 +240,17 @@ void Conductor::OnServerConnectionFailure()
     printf("OnServerConnectionFailure \n");
 }
 
+void Conductor::OnSuccess(webrtc::SessionDescriptionInterface *desc)
+{
+    peer_connection_->SetLocalDescription(DummySetSessionDescriptionObserver::Create(), desc);
 
+    std::string sdp;
+    desc->ToString(&sdp);
+
+    printf("Conductor OnSuccess sdp: %s \n", sdp.c_str());
+}
+
+void Conductor::OnFailure(webrtc::RTCError error)
+{
+    printf("Conductor OnFailure error type: %s, error msg: %s \n", ToString(error.type()), error.message());
+}

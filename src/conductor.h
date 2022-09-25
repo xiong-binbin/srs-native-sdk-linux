@@ -31,6 +31,8 @@ public:
     Conductor(PeerConnectionClient* client);
     virtual ~Conductor();
 
+    bool connection_active() const;
+
     void StartLogin(const std::string& server, int port);
 
     void DisconnectFromServer();
@@ -87,6 +89,10 @@ protected:
     void OnMessageSent(int err) override;
 
     void OnServerConnectionFailure() override;
+
+    // CreateSessionDescriptionObserver implementation.
+    void OnSuccess(webrtc::SessionDescriptionInterface* desc) override;
+    void OnFailure(webrtc::RTCError error) override;
 
 private:
     int peer_id_ = -1;

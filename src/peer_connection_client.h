@@ -40,7 +40,7 @@ public:
     };
 
     PeerConnectionClient();
-    ~PeerConnectionClient();
+    virtual ~PeerConnectionClient();
 
     void RegisterObserver(PeerConnectionClientObserver* callback);
 
@@ -51,6 +51,9 @@ public:
     bool SignOut();
 
     bool SendHangUp(int peer_id);
+
+    // implements the MessageHandler interface
+    void OnMessage(rtc::Message* msg) override;
 
 protected:
     void Close();

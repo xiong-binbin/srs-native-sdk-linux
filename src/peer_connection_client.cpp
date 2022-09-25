@@ -136,6 +136,12 @@ bool PeerConnectionClient::SendHangUp(int peer_id)
     return true;
 }
 
+void PeerConnectionClient::OnMessage(rtc::Message *msg)
+{
+    // ignore msg; there is currently only one supported message ("retry")
+    DoConnect();
+}
+
 void PeerConnectionClient::OnClose(rtc::AsyncSocket* socket, int err)
 {
     printf("OnClose \n");

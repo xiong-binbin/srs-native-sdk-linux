@@ -21,7 +21,7 @@ include_directories(
 )
 
 #引入源文件
-file(GLOB SRC_LIST "src/*.cpp" "main.cpp")
+file(GLOB SRC_LIST "src/*.cpp")
 
 #生成可执行文件
 add_executable(${PROJECT} ${SRC_LIST})
