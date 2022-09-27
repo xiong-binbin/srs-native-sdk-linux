@@ -10,7 +10,7 @@
 int main(int argc, char *argv[])
 {
     SrsClient sc;
-    sc.start(argc, argv);
+    sc.Start();
 
     while (true) {
         pause();

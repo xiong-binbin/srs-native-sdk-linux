@@ -44,8 +44,8 @@ public:
     SrsClient();
     ~SrsClient();
 
-    int  start(int argc, char* argv[]);
-    void stop();
+    int  Start();
+    void Stop();
 
 private:
 };

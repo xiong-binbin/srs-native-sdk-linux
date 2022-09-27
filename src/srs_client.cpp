@@ -15,7 +15,7 @@ SrsClient::~SrsClient()
 {
 }
 
-int SrsClient::start(int argc, char* argv[])
+int SrsClient::Start()
 {
     webrtc::field_trial::InitFieldTrialsFromString("");
 
@@ -33,9 +33,11 @@ int SrsClient::start(int argc, char* argv[])
 
     thread.Run();
 
+    conductor->StartLogin("https://apprtc.webrtcserver.cn/", 443);
+
     return 0;
 }
 
-void SrsClient::stop()
+void SrsClient::Stop()
 {
 }
