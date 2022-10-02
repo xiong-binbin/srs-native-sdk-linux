@@ -33,7 +33,7 @@ int SrsClient::Start()
 
     thread.Run();
 
-    conductor->StartLogin("https://apprtc.webrtcserver.cn/", 443);
+    conductor->StartLogin("127.0.0.1", 8888);
 
     return 0;
 }
